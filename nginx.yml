@@ -1,0 +1,32 @@
+---
+- name: Configure Nginx on Remote Server
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Copy Nginx Configuration
+      copy:
+        src: /test/nginx.conf  # Replace with your actual configuration file
+        dest: /etc/nginx/nginx.conf
+      notify: restart nginx
+
+    - name: Create Website Directory
+      file:
+        path: /var/www/html/mywebsite  # Replace with your desired website path
+        state: directory
+
+    - name: Copy Website Content
+      copy:
+        src: /test/website  # Replace with your website files
+        dest: /var/www/html/mywebsite/
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

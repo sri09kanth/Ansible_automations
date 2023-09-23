@@ -1,0 +1,9 @@
+---
+- name: Firewall Configuration
+  hosts: target_server
+  become: yes
+  tasks:
+    - name: Allow HTTP and HTTPS
+      firewalld:
+        service: http,https
+        state: enabled

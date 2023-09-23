@@ -1,0 +1,12 @@
+---
+- name: Database Backup
+  hosts: db_server
+  become: yes
+  tasks:
+    - name: Create Backup Directory
+      file:
+        path: /backup
+        state: directory
+
+    - name: Backup Database
+      command: pg_dump dbname > /backup/db_backup.sql

@@ -1,0 +1,11 @@
+---
+- name: Cron Job Management
+  hosts: target_server
+  become: yes
+  tasks:
+    - name: Schedule Cron Job
+      cron:
+        name: "My Cron Job"
+        minute: "0"
+        hour: "2"
+        job: "/test/script.sh"
