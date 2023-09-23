@@ -1,0 +1,14 @@
+---
+- name: User and SSH Key Management
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create User
+      user:
+        name: new_user
+        state: present
+    
+    - name: Deploy SSH Key
+      authorized_key:
+        user: sri
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
