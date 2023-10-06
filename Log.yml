@@ -1,0 +1,25 @@
+---
+- name: Retrieve Azure VM logs
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Log in to Azure
+      azure_rm_login:
+        client_id: "{{ azure_client_id }}"
+        secret: "{{ azure_secret }}"
+        subscription_id: "{{ azure_subscription_id }}"
+        tenant: "{{ azure_tenant }}"
+      register: login
+
+    - name: Query Azure Monitor Logs
+      azure_rm_loganalytics_query:
+        workspace_id: "{{ azure_loganalytics_workspace_id }}"
+        query: "Heartbeat | take 10"
+        timespan: "PT1H"  # Query logs for the last 1 hour
+        cloud_environment: "{{ azure_cloud_environment }}"
+      register: query_result
+
+    - name: Print query result
+      debug:
+        var: query_result
